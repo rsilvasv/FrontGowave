@@ -2,11 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ShoppingCart, User, Menu, LogOut } from 'lucide-react'
+import { User, Menu, LogOut, Search } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
+import ShoppingCartSidebar from '../cart/shopping-cart-sidebar'
+import { Input } from '@/components/ui/input'
 
-export default function Component() {
+export default function Navbar() {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { user, logout } = useAuth()
@@ -14,18 +16,36 @@ export default function Component() {
 
   return (
     <nav className="bg-white shadow-sm">
-      <div className="w-auto mx-auto px-4 sm:px-6">
+      <div className="w-auto mx-auto px-4 sm:px-6 lg:px-8 xl:px-4">
         <div className="flex justify-between items-center h-[56px]">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               {logoUrl && (
-                <img src={logoUrl} alt="Logo" className="h-7  " />
+                <img src={logoUrl} alt="Logo" className="h-8" />
               )}
-              <span className="font-harmoni text-xl text-black-900 ml-2 flex items-center leading-none">GoWave</span>
+              <span className="font-harmoni text-2xl text-black-900 ml-2 flex items-center leading-none">GoWave</span>
             </Link>
           </div>
-          <div className="hidden md:flex items-center">
+
+          {/* Search Bar */}
+          <div className="flex-1 max-w-xl mx-4 hidden sm:block">
+            <div className="relative">
+              <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
+                <Search className="h-4 w-4 text-gray-400" />
+              </div>
+              <Input
+                id="search"
+                name="search"
+                className="block w-full pl-10 pr-3 py-1 text-sm border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
+                placeholder="Search"
+                type="search"
+              />
+            </div>
+          </div>
+
+          <div className="hidden md:flex items-center space-x-4">
             <NavLinks pathname={pathname} user={user} logout={logout} />
+            <ShoppingCartSidebar />
           </div>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -49,15 +69,6 @@ export default function Component() {
 function NavLinks({ pathname, user, logout }: { pathname: string; user: any; logout: () => void }) {
   return (
     <>
-      <Link 
-        href="/cart" 
-        className={`text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium ${
-          pathname === '/cart' ? 'bg-gray-100' : ''
-        }`}
-      >
-        <ShoppingCart className="inline-block h-4 w-4 mr-1" />
-        <span className="hidden sm:inline">Carrito</span>
-      </Link>
       {user ? (
         <>
           <Link 
@@ -82,7 +93,7 @@ function NavLinks({ pathname, user, logout }: { pathname: string; user: any; log
           }`}
         >
           <User className="inline-block h-4 w-4 mr-1" />
-          <span className="hidden sm:inline">Login</span>
+          <span className="hidden sm:inline">Sign in</span>
         </Link>
       )}
     </>
