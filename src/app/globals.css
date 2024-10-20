@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: 'Harmoni';
-  src: url('/fonts/Harmoni.ttf') format('truetype');
+  src: url('./fonts//Harmoni.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,9 +15,9 @@
 }
 
 body {
-  @apply font-sans;
+  @layer font-sans;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @apply font-harmoni;
+  @layer font-harmoni;
 }

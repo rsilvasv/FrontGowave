@@ -4,7 +4,7 @@ import FeaturedPhotos from './components/features/FeaturedPhotos'
 export default function Home() {
   return (
     <>
-      <h1 className="text-4xl font-bold text-center mb-8">Bienvenido a SurfShop</h1>
+      <h1 className="text-4xl font-harmoni text-center mb-8">Bienvenido a SurfShop</h1>
       <Map />
       <FeaturedPhotos />
     </>
