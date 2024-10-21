@@ -1,63 +1,72 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import useEmblaCarousel from 'embla-carousel-react'
+import { useCallback } from 'react'
+import { Button } from "@/components/ui/button"
 
 export default function FeaturedPhotos() {
   const photos = [
-    { id: 1, src: '/placeholder.svg?height=400&width=600', alt: 'Surf 1' },
-    { id: 2, src: '/placeholder.svg?height=400&width=600', alt: 'Surf 2' },
-    { id: 3, src: '/placeholder.svg?height=400&width=600', alt: 'Surf 3' },
-    { id: 4, src: '/placeholder.svg?height=400&width=600', alt: 'Surf 4' },
-    { id: 5, src: '/placeholder.svg?height=400&width=600', alt: 'Surf 5' },
+    { id: 1, src: 'https://firebasestorage.googleapis.com/v0/b/gowave-e46ce.appspot.com/o/cutwave.jpg?alt=media&token=2f592563-35f7-4ee8-adde-90d341d5f5d2', alt: 'Surf 1' },
+    { id: 2, src: 'https://firebasestorage.googleapis.com/v0/b/gowave-e46ce.appspot.com/o/epic-long.jpg?alt=media&token=7f4f70a8-4fc5-4e2d-ad54-2753466b3b9b', alt: 'Surf 2' },
+    { id: 3, src: 'https://firebasestorage.googleapis.com/v0/b/gowave-e46ce.appspot.com/o/epicwave.jpg?alt=media&token=6f48262e-fc3f-4da5-9266-fd02a4a583af', alt: 'Surf 3' },
+    { id: 4, src: 'https://firebasestorage.googleapis.com/v0/b/gowave-e46ce.appspot.com/o/surf-airwave.jpg?alt=media&token=e4bd7537-0b6a-403c-bb2d-08bea12fefb4', alt: 'Surf 4' },
+    { id: 5, src: 'https://firebasestorage.googleapis.com/v0/b/gowave-e46ce.appspot.com/o/tablas-surf.jpg?alt=media&token=7d4b4c24-6f26-4933-9eeb-bf5c10bb9a8d', alt: 'Surf 5' },
   ]
 
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: 'start',
+    loop: true,
+    slidesToScroll: 1,
+  })
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % photos.length)
-  }
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev()
+  }, [emblaApi])
 
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + photos.length) % photos.length)
-  }
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext()
+  }, [emblaApi])
 
   return (
-    <section className="mb-12">
-      <h2 className="text-2xl font-semibold mb-4">Fotos Destacadas</h2>
-      <div className="relative">
-        <div className="overflow-hidden">
-          <div
-            className="flex transition-transform duration-300 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+    <section className="m-10">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-semibold font-inter">Featured Photos</h2>
+        <div className="flex gap-2">
+          <Button
+            onClick={scrollPrev}
+            variant="outline"
+            size="icon"
+            className="rounded-full"
           >
-            {photos.map((photo) => (
-              <div key={photo.id} className="w-full flex-shrink-0">
-                <div className="relative h-64 md:h-96 mx-2">
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    className="object-cover rounded-lg transition-transform duration-300 hover:scale-105"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button
+            onClick={scrollNext}
+            variant="outline"
+            size="icon"
+            className="rounded-full"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         </div>
-        <button
-          onClick={prevSlide}
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 transition-colors duration-300"
-        >
-          <ChevronLeft className="h-6 w-6" />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 transition-colors duration-300"
-        >
-          <ChevronRight className="h-6 w-6" />
-        </button>
+      </div>
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex -ml-4">
+          {photos.map((photo) => (
+            <div key={photo.id} className="flex-[0_0_30%] min-w-0 pl-4">
+              <div className="relative h-64 md:h-96">
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  className="object-cover rounded-lg transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )

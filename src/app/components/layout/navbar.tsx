@@ -21,9 +21,9 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               {logoUrl && (
-                <img src={logoUrl} alt="Logo" className="h-8" />
+                <img src={logoUrl} alt="Logo" className="h-8 align-middle" />
               )}
-              <span className="font-harmoni text-2xl text-black-900 ml-2 flex items-center leading-none">GoWave</span>
+              <span className="font-inter font-semibold text-xl text-black-900 ml-2 flex items-center leading-none">GoWave</span>
             </Link>
           </div>
 
